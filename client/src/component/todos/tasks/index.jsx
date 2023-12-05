@@ -8,7 +8,8 @@ import styles from "./tasks.module.css"
 
 export default function Tasks() {
     const [todos, setTodos] = useState([]);
-
+    const [gradientWidth, setGradientWidth] = useState(0);
+    const [duration, setDuration] = useState(60);
 
 
     const GetTodos = () => {
@@ -19,10 +20,15 @@ export default function Tasks() {
     }
 
     useEffect(() => {
+        const intervalId = setInterval(() => {
+            setGradientWidth(prevWidth => (prevWidth - 100 / duration + 100) % 100);
+            setDuration(prevDuration => prevDuration - 1);
+        }, 1000);
 
         GetTodos();
-        console.log(todos)
-    }, [todos])
+
+        return () => clearInterval(intervalId);
+    }, [todos, duration]);
 
 
     const handlerComplete = async id => {
@@ -48,13 +54,23 @@ export default function Tasks() {
         setTodos(todos => todos.filter(todo => todo._id !== data._id))
     }
 
+    const intervalStyle = {
+        backgroundImage: `linear-gradient(to left, rgba(40, 40, 138, 1) ${gradientWidth}%, transparent ${gradientWidth}%)`,
+        transition: 'background-image 0.5s ease',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+
     return (
         <div>
             <h1>Welcome, Stan</h1>
             <h2>Your Tasks</h2>
 
             <div className={styles.todos}>
-                {todos.map(todo => (<div className={styles.todo + ' ' + (todo.complete ? styles.isComplete : "")} key={todo._id} >
+                {todos.map(todo => (<div className={styles.todo + ' ' + (todo.complete ? styles.isComplete : "")}
+                    style={{ ...intervalStyle }}
+                    key={todo._id} >
                     <div className={styles.checkbox} onClick={() => handlerComplete(todo._id)} ></div>
                     <div className={styles.text} onClick={() => handlerComplete(todo._id)} >{todo.text}</div>
                     <div className={styles.deleteTodo} onClick={() => handlerDelete(todo._id)}>X</div>

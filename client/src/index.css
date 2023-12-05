@@ -24,16 +24,20 @@ body {
 }
 
 h1 {
+  text-align: center;
   font-size: 40px;
   font-weight: 700;
   margin-bottom: 32px;
+  margin-top: 32px;
 }
 
 h2 {
+  text-align: center;
   font-size: 18px;
   color: var(--light-alt);
   text-transform: uppercase;
   font-weight: 400;
   margin-bottom: 16px;
+  margin-top: 16px;
 }
 
