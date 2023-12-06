@@ -8,9 +8,9 @@ import styles from "./tasks.module.css"
 
 export default function Tasks() {
     const [todos, setTodos] = useState([]);
-    const [gradientWidth, setGradientWidth] = useState(0);
-    const [duration, setDuration] = useState(60);
-
+    const [gradientWidth, setGradientWidth] = useState(100);
+    const [initialTime, setInitialTime] = useState(4)
+    const [duration, setDuration] = useState(initialTime - 1);
 
     const GetTodos = () => {
         fetch(API_BASE + "/todos")
@@ -20,15 +20,20 @@ export default function Tasks() {
     }
 
     useEffect(() => {
+        console.log(gradientWidth, duration)
+
         const intervalId = setInterval(() => {
-            setGradientWidth(prevWidth => (prevWidth - 100 / duration + 100) % 100);
+            setGradientWidth((duration / initialTime) * 100);
             setDuration(prevDuration => prevDuration - 1);
         }, 1000);
-
+        if (duration == -1) {
+            clearInterval(intervalId);
+        }
         GetTodos();
 
+
         return () => clearInterval(intervalId);
-    }, [todos, duration]);
+    }, [duration]);
 
 
     const handlerComplete = async id => {

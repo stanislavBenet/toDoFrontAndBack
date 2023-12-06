@@ -26,7 +26,8 @@ app.get('/todos', async (req, res) => {
 
 app.post('/todo/new', (req, res) => {
     const todo = new Todo({
-        text: req.body.text
+        text: req.body.text,
+        deadLineTime: req.body.deadLineTime,
     })
 
     todo.save();

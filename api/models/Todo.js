@@ -11,6 +11,10 @@ const TodoSchema = new Schema(
             type: Boolean,
             default: false
         },
+        deadLineTime: {
+            type: Number,
+            default: 0,
+        },
         timestamp: {
             type: String,
             default: Date.now()
